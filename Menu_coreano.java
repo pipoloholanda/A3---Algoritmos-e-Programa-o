@@ -109,7 +109,7 @@ public class Menucoreano {
             System.out.println("\nGostaria de pedir algo a mais? (S/N)");
             opcao = ler.next().charAt(0);
 
-        } while (opcao != 'N');
+        } while (opcao != 'N' && opcao != 'n');
 
         System.out.println("Obrigado pela preferência!");
 
