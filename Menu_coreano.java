@@ -7,7 +7,7 @@ public class Menu_coreano {
     public static void main(String[] args) throws IOException {
 
         Scanner ler = new Scanner(System.in);
-        FileWriter arquivo = new FileWriter("resumo.txt");
+        FileWriter arquivo = new FileWriter("conta.txt");
 
         System.out.println("      Bem Vindo ao Restaurante Hanok!");
         System.out.println("=====================MENU======================\n"
@@ -19,22 +19,19 @@ public class Menu_coreano {
                 + "00-SAIR");
 
         char opcao;
+        double conta = 0; // corrigido: float -> double
 
         do {
-
-            double conta = 0; // corrigido: float -> double
-
             System.out.print("Quantos itens você gostaria de pedir? ");
             int qnt = ler.nextInt();
 
             String[] resumo = new String[qnt];
 
             boolean sair = false;
-
-            System.out.println("Digite o código dos itens escolhidos:");
-
+			
             for (int i = 0; i < qnt && !sair; i++) {
-
+                
+                System.out.print("Digite o código do " + (i+1) + "º item escolhido: ");
                 int codigo = ler.nextInt();
 
                 switch (codigo) {
@@ -101,10 +98,10 @@ public class Menu_coreano {
             System.out.println("\n======= RESUMO DO PEDIDO =======");
             arquivo.write("======= RESUMO DO PEDIDO =======\n");
 
-            for (int i = 0; i < resumo.length; i++) {
+            for (String item : resumo) {
 
-                if (resumo[i] != null) {
-                    System.out.println("- " + resumo[i]);
+                if (item != null) {
+                    System.out.println("- " + item);
                     arquivo.write("- " + item + "\n");
                 }
             }
