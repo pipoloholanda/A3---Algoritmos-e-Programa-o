@@ -117,5 +117,6 @@ public class Menu_coreano {
         System.out.println("Obrigado pela preferência!");
 
         ler.close();
+		arquivo.close();
     }
 }
