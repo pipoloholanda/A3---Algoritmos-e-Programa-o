@@ -1,10 +1,13 @@
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
-public class Menucoreano {
+public class Menu_coreano {
 
     public static void main(String[] args) {
 
         Scanner ler = new Scanner(System.in);
+        FileWriter arquivo = new FileWriter("resumo.txt");
 
         System.out.println("      Bem Vindo ao Restaurante Hanok!");
         System.out.println("=====================MENU======================\n"
@@ -96,15 +99,18 @@ public class Menucoreano {
 
             // resumo do pedido
             System.out.println("\n======= RESUMO DO PEDIDO =======");
+            arquivo.write("======= RESUMO DO PEDIDO =======\n");
 
             for (int i = 0; i < resumo.length; i++) {
 
                 if (resumo[i] != null) {
                     System.out.println("- " + resumo[i]);
+                    arquivo.write("- " + item + "\n");
                 }
             }
 
             System.out.printf("Total da conta: R$ %.2f\n", conta);
+            arquivo.write("Total da conta: R$"+ String.format("%.2f\n", conta));
 
             System.out.println("\nGostaria de pedir algo a mais? (S/N)");
             opcao = ler.next().charAt(0);
