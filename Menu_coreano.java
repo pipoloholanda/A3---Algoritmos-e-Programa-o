@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Menu_coreano {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Scanner ler = new Scanner(System.in);
         FileWriter arquivo = new FileWriter("resumo.txt");
