@@ -7,9 +7,9 @@ public class Menu_coreano {
     public static void main(String[] args) throws IOException {
 
         Scanner ler = new Scanner(System.in);
-        FileWriter arquivo = new FileWriter("conta.txt");
+        FileWriter arquivo = new FileWriter("conta.txt"); 
 
-        System.out.println("      Bem Vindo ao Restaurante Hanok!");
+        System.out.println("      Bem Vindo ao Restaurante Hanok!"); 
         System.out.println("=====================MENU======================\n"
                 + "=======COMIDAS=========|======BEBIDAS==========\n"
                 + "11-Bibimbap     R$53,50|21-Soju         R$49,00\n"
@@ -18,16 +18,16 @@ public class Menu_coreano {
                 + "14-Sopa Sundubu R$65,00|24-Suco         R$12,00\n"
                 + "00-SAIR");
 
-        char opcao;
-        double conta = 0; // corrigido: float -> double
+        char opcao; // variavel que determinará se o loop termina 
+        double conta = 0; // variavel que contabiliza o valor da conta iniciando em 0
 
         do {
             System.out.print("Quantos itens você gostaria de pedir? ");
-            int qnt = ler.nextInt();
+            int qnt = ler.nextInt(); // quantidade de itens que o usuário deseja
 
-            String[] resumo = new String[qnt];
+            String[] resumo = new String[qnt]; // vetor em que será salvo os itens escolhidos
 
-            boolean sair = false;
+            boolean sair = false; // booleano criado para condição da saída
 			
             for (int i = 0; i < qnt && !sair; i++) {
                 
