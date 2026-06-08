@@ -8,7 +8,7 @@ public class Menu_coreano {
     public static void main(String[] args) throws IOException {
 
         Scanner ler = new Scanner(System.in); // para ler as entradas do usuário
-        FileWriter arquivo = new FileWriter("resumo.txt"); // para criar um arquivo de texto onde o resumo do pedido será salvo
+        FileWriter arquivo = new FileWriter("conta.txt"); // para criar um arquivo de texto onde o resumo do pedido será salvo
 
         System.out.println("      Bem Vindo ao Restaurante Hanok!");
         System.out.println("=====================MENU======================\n"
