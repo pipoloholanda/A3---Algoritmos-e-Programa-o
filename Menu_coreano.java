@@ -114,10 +114,13 @@ public class Menu_coreano {
         // exibir o resumo geral do pedido e o total da conta
         System.out.println("\n======= RESUMO DO PEDIDO =======");
         arquivo.write("======= RESUMO DO PEDIDO =======\n");
+
         System.out.println(resumoGeral); 
         arquivo.write(resumoGeral);
+
         System.out.println("Quantidade de cada item:"); 
         arquivo.write("\nQuantidade de cada item:\n");
+
         if (qnt11 > 0) {
             System.out.println("- Bibimbap: " + qnt11);
             arquivo.write("- Bibimbap: " + qnt11 + "\n");
