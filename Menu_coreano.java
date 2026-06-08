@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
 public class Menu_coreano {
 
     public static void main(String[] args) throws IOException {
