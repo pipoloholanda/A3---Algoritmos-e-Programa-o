@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
 public class Menu_coreano {
 
     public static void main(String[] args) throws IOException {
@@ -20,8 +21,8 @@ public class Menu_coreano {
 
         char opcao; // variável para controlar se o cliente deseja pedir algo a mais ou finalizar o pedido
         double conta = 0; // variável para calcular o total da conta
-        int qnt11 = 0, qnt12 = 0, qnt13 = 0, qnt14 = 0, qnt21 = 0, qnt22 = 0, qnt23 = 0, qnt24 = 0; 
-        // variáveis para contar a quantidade de cada item pedido
+        int[] quantidades = new int[8];
+        // vetor para contar a quantidade de cada item pedido
         String resumoGeral = ""; // variável para armazenar o resumo geral do pedido, que será exibido no final
 
         do {
@@ -41,56 +42,56 @@ public class Menu_coreano {
                     case 11:
                         System.out.println("Bibimbap escolhido");
                         conta += 53.5;
-                        qnt11++;
+                        quantidades[0]++;
                         resumoGeral += "- Bibimbap\n";
                         break;
 
                     case 12:
                         System.out.println("Bulgogui escolhido");
                         conta += 60;
-                        qnt12++;
+                        quantidades[1]++;
                         resumoGeral += "- Bulgogui\n";
                         break;
 
                     case 13:
                         System.out.println("Toppoki escolhido");
                         conta += 64;
-                        qnt13++;
+                        quantidades[2]++;
                         resumoGeral += "- Toppoki\n";
                         break;
 
                     case 14:
                         System.out.println("Sopa Sundubu escolhida");
                         conta += 65;
-                        qnt14++;
+                        quantidades[3]++;
                         resumoGeral += "- Sopa Sundubu\n";
                         break;
 
                     case 21:
                         System.out.println("Soju escolhido");
                         conta += 49;
-                        qnt21++;
+                        quantidades[4]++;
                         resumoGeral += "- Soju\n";
                         break;
 
                     case 22:
                         System.out.println("Refrigerante escolhido");
                         conta += 8.5;
-                        qnt22++;
+                        quantidades[5]++;
                         resumoGeral += "- Refrigerante\n";
                         break;
 
                     case 23:
                         System.out.println("Água escolhida");
                         conta += 6.5;
-                        qnt23++;
+                        quantidades[6]++;
                         resumoGeral += "- Água\n";
                         break;
 
                     case 24:
                         System.out.println("Suco escolhido");
                         conta += 12;
-                        qnt24++;
+                        quantidades[7]++;
                         resumoGeral += "- Suco\n";
                         break;
 
@@ -114,44 +115,17 @@ public class Menu_coreano {
         // exibir o resumo geral do pedido e o total da conta
         System.out.println("\n======= RESUMO DO PEDIDO =======");
         arquivo.write("======= RESUMO DO PEDIDO =======\n");
-
         System.out.println(resumoGeral); 
         arquivo.write(resumoGeral);
-
         System.out.println("Quantidade de cada item:"); 
         arquivo.write("\nQuantidade de cada item:\n");
+        String[] nomesItens = {"Bibimbap", "Bulgogui", "Toppoki", "Sopa Sundubu", "Soju", "Refrigerante", "Água", "Suco"};
 
-        if (qnt11 > 0) {
-            System.out.println("- Bibimbap: " + qnt11);
-            arquivo.write("- Bibimbap: " + qnt11 + "\n");
-        }
-        if (qnt12 > 0) {
-            System.out.println("- Bulgogui: " + qnt12);
-            arquivo.write("- Bulgogui: " + qnt12 + "\n");
-        }
-        if (qnt13 > 0) {
-            System.out.println("- Toppoki: " + qnt13);
-            arquivo.write("- Toppoki: " + qnt13 + "\n");
-        }
-        if (qnt14 > 0) {
-            System.out.println("- Sopa Sundubu: " + qnt14);
-            arquivo.write("- Sopa Sundubu: " + qnt14 + "\n");
-        }
-        if (qnt21 > 0) {
-            System.out.println("- Soju: " + qnt21);
-            arquivo.write("- Soju: " + qnt21 + "\n");
-        }
-        if (qnt22 > 0) {
-            System.out.println("- Refrigerante: " + qnt22);
-            arquivo.write("- Refrigerante: " + qnt22 + "\n");
-        }
-        if (qnt23 > 0) {
-            System.out.println("- Água: " + qnt23);
-            arquivo.write("- Água: " + qnt23 + "\n");
-        }
-        if (qnt24 > 0) {
-            System.out.println("- Suco: " + qnt24);
-            arquivo.write("- Suco: " + qnt24 + "\n");
+        for (int i = 0; i < nomesItens.length; i++) {
+            if (quantidades[i] > 0) {
+                System.out.println("- " + nomesItens[i] + ": " + quantidades[i]);
+                arquivo.write("- " + nomesItens[i] + ": " + quantidades[i] + "\n");
+            }
         }
 
         System.out.printf("\nTotal da conta: R$ %.2f\n", conta);
