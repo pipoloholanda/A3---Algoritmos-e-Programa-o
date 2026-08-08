@@ -1,139 +1,120 @@
-import java.util.Scanner;
+import java.util.*;
 import java.io.FileWriter;
 import java.io.IOException;
 
+public class MenuCoreano {
 
-public class Menu_coreano {
+    static class Item {
+        String nome;
+        double preco;
 
-    public static void main(String[] args) throws IOException {
+        Item(String nome, double preco) {
+            this.nome = nome;
+            this.preco = preco;
+        }
+    }
 
-        Scanner ler = new Scanner(System.in); // para ler as entradas do usuário
-        FileWriter arquivo = new FileWriter("conta.txt"); // para criar um arquivo de texto onde o resumo do pedido será salvo
+    public static void main(String[] args) {
+        Map<Integer, Item> menu = criarMenu();
 
-        System.out.println("      Bem Vindo ao Restaurante Hanok!");
-        System.out.println("=====================MENU======================\n"
-                + "========COMIDAS========|========BEBIDAS========\n"
-                + "11-Bibimbap     R$53,50|21-Soju         R$49,00\n"
-                + "12-Bulgogui     R$60,00|22-Refrigerante R$8,50\n"
-                + "13-Toppoki      R$64,00|23-Água         R$6,50\n"
-                + "14-Sopa Sundubu R$65,00|24-Suco         R$12,00\n"
-                + "00-SAIR");
+        try (Scanner ler = new Scanner(System.in);
+             FileWriter arquivo = new FileWriter("conta.txt")) {
 
-        char opcao; // variável para controlar se o cliente deseja pedir algo a mais ou finalizar o pedido
-        double conta = 0; // variável para calcular o total da conta
-        int[] quantidades = new int[8];
-        // vetor para contar a quantidade de cada item pedido
-        String resumoGeral = ""; // variável para armazenar o resumo geral do pedido, que será exibido no final
+            exibirMenu();
 
-        do {
-            System.out.print("Quantos itens você gostaria de pedir? ");
-            int qnt = ler.nextInt(); // quantidade de itens que o cliente deseja pedir
+            double conta = 0;
+            Map<Integer, Integer> quantidades = new HashMap<>();
+            StringBuilder resumoGeral = new StringBuilder();
 
-            boolean sair = false; // variável para controlar se o cliente deseja sair do processo de escolha dos itens, caso ele digite o código 00
+            char opcao;
+            do {
+                System.out.print("Quantos itens você gostaria de pedir? ");
+                int qnt = ler.nextInt();
 
-            for (int i = 0; i < qnt && !sair; i++) {
+                boolean sair = false;
+                for (int i = 0; i < qnt && !sair; i++) {
+                    System.out.print("Digite o código do " + (i + 1) + "º item escolhido: ");
+                    int codigo = ler.nextInt();
 
-                System.out.print("Digite o código do " + (i+1) + "º item escolhido: ");
-                int codigo = ler.nextInt(); 
-                // código do item escolhido pelo cliente, que será usado para identificar qual item foi pedido e calcular o valor da conta
-
-                switch (codigo) {
-
-                    case 11:
-                        System.out.println("Bibimbap escolhido");
-                        conta += 53.5;
-                        quantidades[0]++;
-                        resumoGeral += "- Bibimbap\n";
+                    if (codigo == 0) {
+                        sair = true;
                         break;
+                    }
 
-                    case 12:
-                        System.out.println("Bulgogui escolhido");
-                        conta += 60;
-                        quantidades[1]++;
-                        resumoGeral += "- Bulgogui\n";
-                        break;
-
-                    case 13:
-                        System.out.println("Toppoki escolhido");
-                        conta += 64;
-                        quantidades[2]++;
-                        resumoGeral += "- Toppoki\n";
-                        break;
-
-                    case 14:
-                        System.out.println("Sopa Sundubu escolhida");
-                        conta += 65;
-                        quantidades[3]++;
-                        resumoGeral += "- Sopa Sundubu\n";
-                        break;
-
-                    case 21:
-                        System.out.println("Soju escolhido");
-                        conta += 49;
-                        quantidades[4]++;
-                        resumoGeral += "- Soju\n";
-                        break;
-
-                    case 22:
-                        System.out.println("Refrigerante escolhido");
-                        conta += 8.5;
-                        quantidades[5]++;
-                        resumoGeral += "- Refrigerante\n";
-                        break;
-
-                    case 23:
-                        System.out.println("Água escolhida");
-                        conta += 6.5;
-                        quantidades[6]++;
-                        resumoGeral += "- Água\n";
-                        break;
-
-                    case 24:
-                        System.out.println("Suco escolhido");
-                        conta += 12;
-                        quantidades[7]++;
-                        resumoGeral += "- Suco\n";
-                        break;
-
-                    case 00:
-                        sair = true; // se o cliente digitar 00, ele deseja sair do processo de escolha dos itens, então a variável sair é setada como true para interromper o loop
-                        break;
-
-                    default:
+                    if (menu.containsKey(codigo)) {
+                        Item item = menu.get(codigo);
+                        conta += item.preco;
+                        quantidades.put(codigo, quantidades.getOrDefault(codigo, 0) + 1);
+                        resumoGeral.append("- ").append(item.nome).append("\n");
+                        System.out.println(item.nome + " escolhido");
+                    } else {
                         System.out.println("Opção inválida! Digite novamente.");
-                        i--; // para repetir a iteração atual e permitir que o cliente digite um código válido
-                        break;
+                        i--; // repete a iteração
+                    }
                 }
-            }
 
-            System.out.println("\nGostaria de pedir algo a mais? (S/N)"); 
-            opcao = ler.next().charAt(0); // o cliente é perguntado se deseja pedir algo a mais, e a resposta é lida como um caractere. 
+                System.out.println("\nGostaria de pedir algo a mais? (S/N)");
+                opcao = ler.next().charAt(0);
 
-        } while (opcao != 'N' && opcao != 'n'); // o loop continua enquanto o cliente desejar pedir algo a mais, ou seja, enquanto ele não digitar 'N' ou 'n'
+            } while (opcao != 'N' && opcao != 'n');
 
+            gerarResumo(arquivo, menu, quantidades, resumoGeral, conta);
 
-        // exibir o resumo geral do pedido e o total da conta
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar o arquivo: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada inválida! Use apenas números.");
+        }
+    }
+
+    private static Map<Integer, Item> criarMenu() {
+        Map<Integer, Item> menu = new HashMap<>();
+        menu.put(11, new Item("Bibimbap", 53.5));
+        menu.put(12, new Item("Bulgogui", 60.0));
+        menu.put(13, new Item("Toppoki", 64.0));
+        menu.put(14, new Item("Sopa Sundubu", 65.0));
+        menu.put(21, new Item("Soju", 49.0));
+        menu.put(22, new Item("Refrigerante", 8.5));
+        menu.put(23, new Item("Água", 6.5));
+        menu.put(24, new Item("Suco", 12.0));
+        return menu;
+    }
+
+    private static void exibirMenu() {
+        System.out.println("      Bem Vindo ao Restaurante Hanok!");
+        System.out.println("=====================MENU======================");
+        System.out.println("========COMIDAS========|========BEBIDAS========");
+        System.out.println("11-Bibimbap     R$53,50|21-Soju         R$49,00");
+        System.out.println("12-Bulgogui     R$60,00|22-Refrigerante R$8,50");
+        System.out.println("13-Toppoki      R$64,00|23-Água         R$6,50");
+        System.out.println("14-Sopa Sundubu R$65,00|24-Suco         R$12,00");
+        System.out.println("00-SAIR");
+    }
+
+    private static void gerarResumo(FileWriter arquivo, Map<Integer, Item> menu,
+                                    Map<Integer, Integer> quantidades,
+                                    StringBuilder resumoGeral, double conta) throws IOException {
+
         System.out.println("\n======= RESUMO DO PEDIDO =======");
         arquivo.write("======= RESUMO DO PEDIDO =======\n");
-        System.out.println(resumoGeral); 
-        arquivo.write(resumoGeral);
-        System.out.println("Quantidade de cada item:"); 
-        arquivo.write("\nQuantidade de cada item:\n");
-        String[] nomesItens = {"Bibimbap", "Bulgogui", "Toppoki", "Sopa Sundubu", "Soju", "Refrigerante", "Água", "Suco"};
 
-        for (int i = 0; i < nomesItens.length; i++) {
-            if (quantidades[i] > 0) {
-                System.out.println("- " + nomesItens[i] + ": " + quantidades[i]);
-                arquivo.write("- " + nomesItens[i] + ": " + quantidades[i] + "\n");
-            }
+        System.out.println(resumoGeral);
+        arquivo.write(resumoGeral.toString());
+
+        System.out.println("Quantidade de cada item:");
+        arquivo.write("\nQuantidade de cada item:\n");
+
+        for (Map.Entry<Integer, Integer> entry : quantidades.entrySet()) {
+            int codigo = entry.getKey();
+            int qtd = entry.getValue();
+            Item item = menu.get(codigo);
+            System.out.println("- " + item.nome + ": " + qtd);
+            arquivo.write("- " + item.nome + ": " + qtd + "\n");
         }
 
         System.out.printf("\nTotal da conta: R$ %.2f\n", conta);
-        arquivo.write("\nTotal da conta: R$"+ String.format("%.2f\n", conta));
+        arquivo.write("\nTotal da conta: R$" + String.format("%.2f\n", conta));
 
         System.out.println("Obrigado pela preferência!");
-
-        ler.close();
-        arquivo.close();
     }
 }
